@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import './styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import dotIcon from '../assets/doticon.png';
 
 function App() {
   const [lines, setLines] = useState([]);
@@ -28,7 +29,7 @@ function App() {
         <h3>Sorry go to desktop for use this <br /> mobile coming soon :D </h3>  
       </div>
       <div className='img_container'>
-        <img src="..\src\assets\doticon.png" alt="illustration doticon" />
+        <img src={dotIcon} alt="illustration de doticon" />
       </div>
       <div className='drawing_container'>
         <DrawingGrid onDraw={handleDraw} />
