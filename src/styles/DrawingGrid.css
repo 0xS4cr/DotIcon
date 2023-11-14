@@ -1,0 +1,11 @@
+/* DrawingGrid.css */
+.canvas-container {
+    text-align: center;
+  }
+  
+  canvas {
+    position: relative;
+    z-index: 1;
+    border-radius: 2rem;
+    display: block; 
+  }

@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&family=Tilt+Neon&display=swap");
+
+body {
+  background-color: #000009;
+}
+
+h1 {
+  position: relative;
+  font-family: "Tilt Neon", sans-serif;
+  font-size: 7vw;
+  margin: 1vh 3vw;
+  color: #fff;
+  text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 10px rgb(36, 216, 243);
+}
+h2 {
+  position: absolute;
+  top: 2vh;
+  right: 10vw;
+  font-size: 5vw;
+  color: #fff;
+  text-shadow: 0 0 7px #fff, 0 0 1px #fff, 0 0 15px rgb(0, 0, 9);
+}
+
+h3 {
+  display: none;
+}
+.img_container {
+  position: absolute;
+  z-index: -1;
+  right: 5vw;
+  top: 25vh;
+}
+.img_container img {
+  height: 72vh;
+  opacity: 0.6;
+}
+
+.drawing_container {
+  position: absolute;
+  z-index: -1;
+  left: 8vw;
+  top: 28vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.reset_button {
+  width: 10%;
+  margin: 0 auto;
+  margin-top: -3.5vh;
+  margin-bottom: -3vh;
+  height: 4vh;
+  border: 1px solid #fff;
+  background-color: transparent;
+  border-radius: 1rem;
+  color: red;
+}
+
+ .reset_button:hover {
+  background-color: red;
+  color: #fff;
+  cursor: pointer; 
+  border: none;
+ }
+
+@media screen and (max-width: 1024px) {
+  .img_container img {
+    height: 55vh;
+    opacity: 0.5;
+  }
+  .drawing_container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    top: 35vh;
+    margin: -50px;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  h2 {
+    position: relative;
+    top: 10vh;
+    left: 10vw;
+    font-size: 10vw;
+  }
+  h3 {
+    display: block;
+    position: relative;
+    font-family: "Kanit", sans-serif;
+    font-size: 6vw;
+    top: 25vh;
+    left: 5vw;
+    color: #fff;
+  }
+  .drawing_container {
+    display: none;
+  }
+  .img_container img {
+    height: 80vh;
+    opacity: 0.5;
+  }
+}
