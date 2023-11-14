@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 import './styles/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
-import dotIcon from '../assets/doticon.png';
+import dotIcon from '../src/assets/doticon.png';
 
 function App() {
   const [lines, setLines] = useState([]);
