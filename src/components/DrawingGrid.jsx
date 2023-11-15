@@ -15,7 +15,7 @@ function DrawingGrid({ onDraw }) {
 
   const sketch = (p5) => {
     let grid = [];
-    const gridSize = 35; 
+    const gridSize = 19; 
 
     const createGrid = () => {
       for (let x = gridSize; x < p5.width; x += gridSize) {
