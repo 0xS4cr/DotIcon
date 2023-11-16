@@ -1,69 +1,101 @@
 // DrawingGrid.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { ReactP5Wrapper } from 'react-p5-wrapper';
+import React, { useEffect, useRef } from 'react';
+import p5 from 'p5';
 import '../styles/DrawingGrid.css';
 
 function DrawingGrid({ onDraw }) {
-  const [lines, setLines] = useState([]);
-  const [selectedPoint, setSelectedPoint] = useState(null);
-  const linesRef = useRef([]); 
+  const sketchRef = useRef();
+  const p5Instance = useRef(null);
+  const shapesRef = useRef([]);
 
-  useEffect(() => {
-    linesRef.current = lines; 
-    onDraw(lines); 
-  }, [lines, onDraw]);
+  const sketch = (p) => {
+    const gridSize = 19;
+    let currentShape = [];
+    let drawing = false;
 
-  const sketch = (p5) => {
-    let grid = [];
-    const gridSize = 19; 
+    p.setup = () => {
+      p.createCanvas(450, 450);
+    };
 
-    const createGrid = () => {
-      for (let x = gridSize; x < p5.width; x += gridSize) {
-        for (let y = gridSize; y < p5.height; y += gridSize) {
-          grid.push(p5.createVector(x, y));
-        }
+    p.draw = () => {
+      p.background(0, 0, 9);
+      drawGrid(p);
+      drawShapes(p, shapesRef.current);
+
+      if (drawing) {
+        drawCurrentShape(p, currentShape);
       }
     };
 
-    p5.setup = () => {
-      p5.createCanvas(450, 450);
-      createGrid();
-    };
-
-    p5.draw = () => {
-      p5.background(0, 0, 9);
-    
-      grid.forEach(point => {
-        p5.stroke(36, 216, 243);
-        p5.strokeWeight(4);
-        p5.point(point.x, point.y);
-      });
-
-      lines.forEach(line => {
-        p5.stroke('white');
-        p5.strokeWeight(4);
-        p5.line(line[0].x, line[0].y, line[1].x, line[1].y);
-      });
-    };
-
-    p5.mousePressed = () => {
-      let closestPoint = grid.find(point => p5.dist(p5.mouseX, p5.mouseY, point.x, point.y) < gridSize / 2);
-      if (closestPoint) {
-        if (selectedPoint) {
-          setLines(prevLines => [...prevLines, [selectedPoint, closestPoint]]);
-          setSelectedPoint(null);
-        } else {
-          setSelectedPoint(closestPoint);
+    function drawGrid(p) {
+      for (let x = gridSize; x < p.width; x += gridSize) {
+        for (let y = gridSize; y < p.height; y += gridSize) {
+          p.stroke(36, 216, 243);
+          p.strokeWeight(4);
+          p.point(x, y);
         }
       }
+    }
+
+    function drawShapes(p, shapes) {
+      shapes.forEach(shape => {
+        p.stroke('white');
+        p.strokeWeight(4);
+        p.noFill();
+        p.beginShape();
+        shape.forEach(pt => p.vertex(pt.x, pt.y));
+        p.endShape();
+      });
+    }
+
+    function drawCurrentShape(p, shape) {
+        p.stroke('red');
+        p.strokeWeight(4);
+        p.noFill();
+        p.beginShape();
+        shape.forEach(pt => p.vertex(pt.x, pt.y));
+        p.endShape();
+    }
+
+    p.mousePressed = () => {
+      if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
+        currentShape = [snapToGrid(p.mouseX, p.mouseY)];
+        drawing = true;
+      }
     };
+
+    p.mouseDragged = () => {
+      if (drawing) {
+        currentShape.push(snapToGrid(p.mouseX, p.mouseY));
+      }
+    };
+
+    p.mouseReleased = () => {
+      if (drawing) {
+        shapesRef.current.push(currentShape);
+        onDraw(shapesRef.current);
+        drawing = false;
+      }
+    };
+
+    function snapToGrid(x, y) {
+      const snappedX = Math.round(x / gridSize) * gridSize;
+      const snappedY = Math.round(y / gridSize) * gridSize;
+      return p.createVector(snappedX, snappedY);
+    }
   };
 
-  return (
-    <div className="canvas-container"> 
-      <ReactP5Wrapper sketch={sketch} />
-    </div>
-  );
+  useEffect(() => {
+    p5Instance.current = new p5(sketch, sketchRef.current);
+
+    return () => {
+      if (p5Instance.current) {
+        p5Instance.current.remove();
+      }
+    };
+  }, []);
+
+  return <div ref={sketchRef} className="canvas-container" />;
 }
 
 export default DrawingGrid;

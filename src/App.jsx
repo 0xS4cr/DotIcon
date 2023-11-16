@@ -1,5 +1,4 @@
-// App.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import DrawingGrid from './components/DrawingGrid';
 import DownloadButton from './components/DownloadButton';
 import Footer from './components/Footer';
@@ -9,11 +8,11 @@ import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import dotIcon from '../src/assets/doticon.png';
 
 function App() {
-  const [lines, setLines] = useState([]);
-  
-  const handleDraw = (newLines) => {
-    setLines(newLines);
-  };
+  const [shapes, setShapes] = useState([]);
+
+  const handleDraw = useCallback((newShapes) => {
+    setShapes(newShapes);
+  }, []);
 
   const refreshPage = () => {
     window.location.reload();
@@ -33,8 +32,10 @@ function App() {
       </div>
       <div className='drawing_container'>
         <DrawingGrid onDraw={handleDraw} />
-        <button onClick={refreshPage} className='reset_button' ><FontAwesomeIcon icon={faRedoAlt} /></button>
-        <DownloadButton lines={lines} />
+        <button onClick={refreshPage} className='reset_button' >
+          <FontAwesomeIcon icon={faRedoAlt} />
+        </button>
+        <DownloadButton shapes={shapes} />
       </div>
       <Footer />
     </div>
